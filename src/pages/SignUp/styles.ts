@@ -21,7 +21,7 @@ export const Content = styled.div`
   max-width: 500px;
 
   img {
-    width: 200px;
+    width: 210px;
   }
 
   form {
@@ -52,7 +52,7 @@ export const Content = styled.div`
   > a {
     color: #ff9000;
     display: block;
-    margin-top: 20px;
+    margin-top: 10px;
     text-decoration: none;
     transition: color 0.2;
 

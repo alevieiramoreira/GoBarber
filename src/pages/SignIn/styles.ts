@@ -21,7 +21,7 @@ export const Content = styled.div`
   max-width: 500px;
 
   img {
-    width: 230px;
+    width: 210px;
   }
 
   form {

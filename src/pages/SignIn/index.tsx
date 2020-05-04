@@ -4,6 +4,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
+import { useAuth } from '../../hooks/AuthContext';
 import getValidationErrors from '../../utils/getValidationErrors';
 import logoImg from '../../assets/logo.svg';
 
@@ -12,31 +13,49 @@ import Button from '../../components/Button';
 
 import { Container, Content, Background } from './styles';
 
+interface SignInFormData {
+  email: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const { user, signIn } = useAuth();
 
-  const handleSubmit = useCallback(async (data: object) => {
-    try {
-      formRef.current?.setErrors({});
+  console.log(user);
 
-      const schema = Yup.object().shape({
-        email: Yup.string()
-          .required('E-mail Obrigatório')
-          .email('Digite um E-mail válido'),
-        password: Yup.string().required('Senha obrigatória'),
-      });
+  const handleSubmit = useCallback(
+    async (data: SignInFormData) => {
+      try {
+        formRef.current?.setErrors({});
 
-      await schema.validate(data, {
-        abortEarly: false, // retorna todos os erros, e não o primeiro
-      });
-    } catch (error) {
-      console.log(error);
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .required('E-mail Obrigatório')
+            .email('Digite um E-mail válido'),
+          password: Yup.string().required('Senha obrigatória'),
+        });
 
-      const errors = getValidationErrors(error);
+        await schema.validate(data, {
+          abortEarly: false, // retorna todos os erros, e não o primeiro
+        });
 
-      formRef.current?.setErrors(errors);
-    }
-  }, []);
+        signIn({
+          email: data.email,
+          password: data.password,
+        });
+      } catch (error) {
+        console.log(error);
+
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
+
+          formRef.current?.setErrors(errors);
+        }
+      }
+    },
+    [signIn],
+  );
 
   return (
     <Container>

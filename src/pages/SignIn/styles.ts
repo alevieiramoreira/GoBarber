@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
 
 import signUpBackground from '../../assets/sign-in-background.png';
@@ -12,13 +12,31 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   margin: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
   place-content: center; /* centraliza eixo X e Y */
   height: 500px;
   width: 100%;
   max-width: 500px;
+`;
+
+const appearFromLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+export const AnimationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  animation: ${appearFromLeft} 1s;
 
   img {
     width: 210px;
